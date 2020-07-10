@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "Protos";
+
+service Writer {
+	rpc SaveSpendingData (WriteSpendingDataRequest) returns (WriteSpendingDataResponce);
+}
+
+message WriteSpendingDataRequest{
+
+}
+
+message WriteSpendingDataResponce{
+
+}

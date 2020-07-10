@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Protos";
+
+service Reader {
+	rpc ReadSpendingData (ReadSpendingDataRequest) returns (ReadSpendingDataResponce);
+}
+
+message ReadSpendingDataRequest{
+
+}
+
+message ReadSpendingDataResponce{
+
+}
