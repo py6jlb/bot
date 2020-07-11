@@ -19,6 +19,9 @@ namespace Bot.TelegramWorker.Extensions
                 "Параметр не может быть null, проверьте перменные окружения.");
 
             services.AddSingleton<TelegramBotClient>((sp) => new TelegramBotClient(botApiKey));
+            services.AddTransient<IMessageHandler, MessageHandler>();
+            services.AddTransient<IInlineQueryHandler, InlineQueryHandler>();
+            services.AddTransient<ICallbackQueryHandler, CallbackQueryHandler>();
             services.AddTransient<IUpdateHandler, UpdateHandler>();
             services.AddHostedService<TelegramWorkerService>();
             
