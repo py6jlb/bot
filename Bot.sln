@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.DataStore", "Bot.DataStore\Bot.DataStore.csproj", "{623F94FC-61AF-4243-A247-E0DCA2736D2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.DataAccessLayer", "Bot.DataAccessLayer\Bot.DataAccessLayer.csproj", "{0AD96285-6F10-4C88-AA0A-5CFB3888F073}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.DataAccessLayer", "Bot.DataAccessLayer\Bot.DataAccessLayer.csproj", "{0AD96285-6F10-4C88-AA0A-5CFB3888F073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.TelegramWorker", "Bot.TelegramWorker\Bot.TelegramWorker.csproj", "{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.TelegramWorker", "Bot.TelegramWorker\Bot.TelegramWorker.csproj", "{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

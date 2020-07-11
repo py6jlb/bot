@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Bot.TelegramWorker.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ namespace Bot.TelegramWorker
                     configApp.AddCommandLine(args);
                 })
                 .ConfigureServices((hostContext, services) => {
-                    //services.InitWorker(hostContext);
+                    services.InitWorker(hostContext);
                 })
                 .ConfigureLogging((hostContext, configLogging) =>
                 {

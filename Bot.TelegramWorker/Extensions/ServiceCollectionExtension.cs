@@ -1,4 +1,5 @@
 ﻿using System;
+using Bot.TelegramWorker.HostedServices;
 using Bot.TelegramWorker.Services;
 using Bot.TelegramWorker.Services.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,12 +18,10 @@ namespace Bot.TelegramWorker.Extensions
             var botApiKey = config["BOT_API_KEY"] ?? throw new ArgumentNullException("botApiKey",
                 "Параметр не может быть null, проверьте перменные окружения.");
 
-            services.AddSingleton<TelegramBotClient>((sp) =>
-            {
-                var bot = new TelegramBotClient(botApiKey);
-                return bot;
-            });
+            services.AddSingleton<TelegramBotClient>((sp) => new TelegramBotClient(botApiKey));
             services.AddTransient<IUpdateHandler, UpdateHandler>();
+            services.AddHostedService<TelegramWorkerService>();
+            
             return services;
         }
     }
