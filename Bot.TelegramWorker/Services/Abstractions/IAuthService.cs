@@ -3,8 +3,8 @@ using Telegram.Bot.Types;
 
 namespace Bot.TelegramWorker.Services.Abstractions
 {
-    public interface IMessageHandler
+    public interface IAuthService
     {
-        Task HandleMessage(Message message);
+        Task<bool> IsAllowedUser(Update update);
     }
 }

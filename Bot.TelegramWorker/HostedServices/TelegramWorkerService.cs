@@ -1,8 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Bot.TelegramWorker.Services.Abstractions;
+﻿using Bot.TelegramWorker.Services.Abstractions;
 using Microsoft.Extensions.Hosting;
-using Telegram.Bot;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bot.TelegramWorker.HostedServices
 {

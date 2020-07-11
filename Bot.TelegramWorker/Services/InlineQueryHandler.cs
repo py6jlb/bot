@@ -21,7 +21,6 @@ namespace Bot.TelegramWorker.Services
             Console.WriteLine($"Received inline query from: {inlineQuery.From.Id}");
 
             InlineQueryResultBase[] results = {
-                // displayed result
                 new InlineQueryResultArticle(
                     id: "3",
                     title: "TgBots",

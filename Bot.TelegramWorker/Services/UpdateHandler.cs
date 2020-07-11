@@ -1,5 +1,7 @@
 ﻿using Bot.TelegramWorker.Services.Abstractions;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -10,20 +12,29 @@ namespace Bot.TelegramWorker.Services
 {
     public class UpdateHandler : IUpdateHandler
     {
+        private readonly IConfiguration _config;
         private readonly TelegramBotClient _bot;
+        private readonly IAuthService _auth;
         private readonly IMessageHandler _messageHandler;
         private readonly IInlineQueryHandler _inlineHandler;
         private readonly ICallbackQueryHandler _callbackHandler;
 
-        public UpdateHandler(TelegramBotClient bot, IMessageHandler messageHandler, IInlineQueryHandler inlineHandler, ICallbackQueryHandler callbackHandler)
+        public UpdateHandler( IConfiguration config,
+            TelegramBotClient bot,
+            IAuthService auth,
+            IMessageHandler messageHandler, 
+            IInlineQueryHandler inlineHandler, 
+            ICallbackQueryHandler callbackHandler)
         {
+            _config = config;
             _bot = bot;
+            _auth = auth;
             _messageHandler = messageHandler;
             _inlineHandler = inlineHandler;
             _callbackHandler = callbackHandler;
         }
 
-        public async Task ReceiveAsync( UpdateType[] allowedUpdates, CancellationToken cancellationToken = default)
+        public async Task ReceiveAsync(UpdateType[] allowedUpdates, CancellationToken cancellationToken = default)
         {
             _bot.IsReceiving = true;
             while (!cancellationToken.IsCancellationRequested)
@@ -45,11 +56,11 @@ namespace Bot.TelegramWorker.Services
                 }
                 catch (ApiRequestException apiException)
                 {
-                    HandleApiError(apiException);
+                    await HandleApiError(apiException);
                 }
                 catch (Exception generalException)
                 {
-                    HandleGeneralError(generalException);
+                    await HandleGeneralError(generalException);
                 }
 
                 try
@@ -84,13 +95,23 @@ namespace Bot.TelegramWorker.Services
 
         private async Task HandleUpdate(Update update, CancellationToken cancellationToken)
         {
+            var isAllowedUser = await _auth.IsAllowedUser(update);
+            if (!isAllowedUser)
+            {
+                await _bot.SendTextMessageAsync(
+                    chatId: update.Message.Chat.Id,
+                    text: "Вы кто такие? Я вас не звал. Идите на х*й."
+                );
+                return;
+            }
+
             var handler = update.Type switch
             {
                 UpdateType.Message => _messageHandler.HandleMessage(update.Message),
                 UpdateType.EditedMessage => _messageHandler.HandleMessage(update.Message),
                 UpdateType.CallbackQuery => _callbackHandler.HandleCallbackQuery(update.CallbackQuery),
-                UpdateType.InlineQuery => _inlineHandler.HandleInlineQuery(update.InlineQuery),
-                UpdateType.ChosenInlineResult => _inlineHandler.HandleChosenInlineResult(update.ChosenInlineResult),
+                // UpdateType.InlineQuery => _inlineHandler.HandleInlineQuery(update.InlineQuery),
+                // UpdateType.ChosenInlineResult => _inlineHandler.HandleChosenInlineResult(update.ChosenInlineResult),
                 // UpdateType.Unknown:
                 // UpdateType.ChannelPost:
                 // UpdateType.EditedChannelPost:
@@ -108,8 +129,7 @@ namespace Bot.TelegramWorker.Services
             {
                 await HandleErrorAsync(exception, cancellationToken);
             }
-            await Task.CompletedTask;
-        }      
+        }
 
         private async Task UnknownUpdateHandlerAsync(Update update)
         {
@@ -128,6 +148,5 @@ namespace Bot.TelegramWorker.Services
             Console.WriteLine(ErrorMessage);
             await Task.CompletedTask;
         }
-
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Grpc.Core;
+﻿using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Protos;
+using System.Threading.Tasks;
 
 namespace Bot.DataStore.Services
 {
