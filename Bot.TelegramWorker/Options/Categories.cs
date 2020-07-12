@@ -6,7 +6,8 @@ namespace Bot.TelegramWorker.Options
 {
     public class Categories
     {
-        public List<Category> OutMoneyCategories { get; set; }
-        public List<Category> IncomeMoneyCategories { get; set; }
+        public int CategoryInLine { get; set; }
+        public Category[] OutMoneyCategories { get; set; }
+        public Category[] IncomeMoneyCategories { get; set; }
     }
 }

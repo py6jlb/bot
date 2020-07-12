@@ -19,11 +19,12 @@ namespace Bot.TelegramWorker.Extensions
 
             services.Configure<Categories>(hostContext.Configuration.GetSection("Categories"));
             services.AddTransient<IAuthService, AuthService>();
-            services.AddSingleton<TelegramBotClient>((sp) => new TelegramBotClient(botApiKey));
+            services.AddSingleton((sp) => new TelegramBotClient(botApiKey));
             services.AddTransient<IMessageHandler, MessageHandler>();
             services.AddTransient<IInlineQueryHandler, InlineQueryHandler>();
             services.AddTransient<ICallbackQueryHandler, CallbackQueryHandler>();
             services.AddTransient<IUpdateHandler, UpdateHandler>();
+            services.AddTransient<IDataService, DataService>();
             services.AddHostedService<TelegramWorkerService>();
 
             return services;

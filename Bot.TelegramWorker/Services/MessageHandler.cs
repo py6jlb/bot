@@ -1,11 +1,13 @@
-﻿using Bot.TelegramWorker.Options;
+﻿using Bot.TelegramWorker.Extensions;
+using Bot.TelegramWorker.Options;
 using Bot.TelegramWorker.Services.Abstractions;
+using Bot.TelegramWorker.Services.Dto;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -19,12 +21,13 @@ namespace Bot.TelegramWorker.Services
     {
         private readonly TelegramBotClient _bot;
         private readonly IOptions<Categories> _categories;
+        private readonly IDataService _dataService;
 
-        public MessageHandler(TelegramBotClient bot, IOptions<Categories> categories)
+        public MessageHandler(TelegramBotClient bot, IOptions<Categories> categories, IDataService dataService)
         {
             _bot = bot;
             _categories = categories;
-
+            _dataService = dataService;
         }
 
         public async Task HandleMessage(Message message)
@@ -61,7 +64,7 @@ namespace Bot.TelegramWorker.Services
         private async Task Usage(Message message)
         {
             const string usage = "Что я умею:\n" +
-                                    "Мне нужно отправлять суммы расходов, а затем выбирать к какой категории расходов они относятся. " +
+                                    "Мне нужно отправлять суммы расходов в рублях, а затем выбирать к какой категории расходов они относятся. " +
                                     "Если надо сохранить приход, то перед суммой должен ыть занк \"+\"";
             await _bot.SendTextMessageAsync(
                 chatId: message.Chat.Id,
@@ -92,124 +95,81 @@ namespace Bot.TelegramWorker.Services
             );
         }
 
-
         private async Task HandleNonComandMessage(Message message)
         {
-            var is_income = message.Text.StartsWith("+");
-            var msg_text = is_income ? message.Text.Substring(1) : message.Text;
-            var is_float = float.TryParse(msg_text, out var num);
-            if (is_float)
+            var isIncome = message.Text.StartsWith("+");
+            var msgText = isIncome ? message.Text.Substring(1) : message.Text;
+            var isFloat = float.TryParse(msgText, NumberStyles.Any, CultureInfo.InvariantCulture, out var num);
+            if (isFloat)
             {
+                var savedData = await _dataService.SaveBaseData(new BaseInfo
+                {
+                    FromUserName = message.From.Username,
+                    Number = num,
+                    RegisterDate = message.Date
+                });
+
                 await _bot.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Вы прислали число",
-                    replyMarkup: is_income ? GetIncomeMoneyInlineKeyboard() : GetOutMoneyInlineKeyboard()
-                ); ;
+                    text: $"{(isIncome ? "" : "-")}{message.Text} руб",
+                    replyMarkup: GetInlineKeyboard(isIncome, savedData.Id)
+                );
             }
             else
             {
                 await _bot.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Я не понимаю что вы от меня хотите(((("
+                    text: "Я не понимаю что вы от меня хотите."
                 );
             }
         }
 
-
-
-        private InlineKeyboardMarkup GetOutMoneyInlineKeyboard()
+        private InlineKeyboardMarkup GetInlineKeyboard(bool isIncome, string savedDataId)
         {
-            var inlineKeyboard = new InlineKeyboardMarkup(new[] {
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                    InlineKeyboardButton.WithCallbackData("1.2", "12"),
-                },
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                    InlineKeyboardButton.WithCallbackData("2.2", "22"),
-                }
-            });
+            var rows = new List<InlineKeyboardButton[]>();
+            var categoryCollection = isIncome ? _categories.Value.IncomeMoneyCategories : _categories.Value.OutMoneyCategories;
+            var categoriInLine = _categories.Value.CategoryInLine;
+            var categoriesArrays = categoryCollection.SplitArray(categoriInLine);
 
+            foreach (var arr in categoriesArrays)
+            {
+                var data = arr.Select(x => {
+                    var callback = new CallbackInfo {Id = savedDataId, Ctg = x.Name };
+                    return InlineKeyboardButton.WithCallbackData(x.Icon, callback.ToString());
+                }).ToArray();
+                rows.Add(data);
+            }
+
+            var inlineKeyboard = new InlineKeyboardMarkup(rows.ToArray());
             return inlineKeyboard;
         }
 
-        private InlineKeyboardMarkup GetIncomeMoneyInlineKeyboard()
-        {
-            var inlineKeyboard = new InlineKeyboardMarkup(new[] {
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("3.1", "1134"),
-                    InlineKeyboardButton.WithCallbackData("4.2", "1sdfsdf2"),
-                },
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("5.1", "sdfgsdf21"),
-                    InlineKeyboardButton.WithCallbackData("6.2", "2sdfgsfd2"),
-                }
-            });
+        //private async Task SendFile(Message message)
+        //{
+        //    await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
 
-            return inlineKeyboard;
-        }
+        //    const string filePath = @"Files/tux.png";
+        //    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        //    var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
+        //    await _bot.SendPhotoAsync(
+        //        chatId: message.Chat.Id,
+        //        photo: new InputOnlineFile(fileStream, fileName),
+        //        caption: "Nice Picture"
+        //    );
+        //}
 
-
-        private async Task SendInlineKeyboard(Message message)
-        {
-            await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
-            await Task.Delay(500);
-
-            var inlineKeyboard = new InlineKeyboardMarkup(new[]
-            {
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                    InlineKeyboardButton.WithCallbackData("1.2", "12"),
-                },
-                new []
-                {
-                    InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                    InlineKeyboardButton.WithCallbackData("2.2", "22"),
-                }
-            });
-
-            await _bot.SendTextMessageAsync(
-                chatId: message.Chat.Id,
-                text: "Choose",
-                replyMarkup: inlineKeyboard
-            );
-        } 
-
-        private async Task SendFile(Message message)
-        {
-            await _bot.SendChatActionAsync(message.Chat.Id, ChatAction.UploadPhoto);
-
-            const string filePath = @"Files/tux.png";
-            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var fileName = filePath.Split(Path.DirectorySeparatorChar).Last();
-            await _bot.SendPhotoAsync(
-                chatId: message.Chat.Id,
-                photo: new InputOnlineFile(fileStream, fileName),
-                caption: "Nice Picture"
-            );
-        }
-
-        private async Task RequestContactAndLocation(Message message)
-        {
-            var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
-            {
-                    KeyboardButton.WithRequestLocation("Местоположение"),
-                    KeyboardButton.WithRequestContact("Контакт"),
-            });
-            await _bot.SendTextMessageAsync(
-                chatId: message.Chat.Id,
-                text: "Кто или Где ты?",
-                replyMarkup: RequestReplyKeyboard
-            );
-        }
-
-
-
+        //private async Task RequestContactAndLocation(Message message)
+        //{
+        //    var RequestReplyKeyboard = new ReplyKeyboardMarkup(new[]
+        //    {
+        //            KeyboardButton.WithRequestLocation("Местоположение"),
+        //            KeyboardButton.WithRequestContact("Контакт"),
+        //    });
+        //    await _bot.SendTextMessageAsync(
+        //        chatId: message.Chat.Id,
+        //        text: "Кто или Где ты?",
+        //        replyMarkup: RequestReplyKeyboard
+        //    );
+        //}
     }
 }
