@@ -13,4 +13,8 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.29.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bot.DataAccessLayer\Bot.DataAccessLayer.csproj" />
+  </ItemGroup>
+
 </Project>
