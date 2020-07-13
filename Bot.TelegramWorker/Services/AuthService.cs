@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Bot.TelegramWorker.Services.Abstractions;
+using Microsoft.Extensions.Configuration;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-namespace Bot.TelegramWorker.Services.Abstractions
+namespace Bot.TelegramWorker.Services
 {
     public class AuthService : IAuthService
     {
@@ -19,7 +19,8 @@ namespace Bot.TelegramWorker.Services.Abstractions
 
         public async Task<bool> IsAllowedUser(Update update)
         {
-            var usernames = _config.GetSection("AllowedUsernames").Get<string[]>();
+            var userString = _config["DOTNET_ALLOWED_USERS"] ?? "";
+            var usernames = userString.Split("||");//isausage inteface
             var result = update.Type switch
             {
                 UpdateType.Message => usernames.Contains(update.Message.From.Username),

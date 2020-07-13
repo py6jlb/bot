@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.DataAccessLayer", "Bot.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.TelegramWorker", "Bot.TelegramWorker\Bot.TelegramWorker.csproj", "{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{EEA93AD4-0A8F-41C7-8533-C552974FD442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}.Release|x64.Build.0 = Release|Any CPU
 		{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7C5C799-F3A9-46B4-9E0A-C33BE1984662}.Release|x86.Build.0 = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|x64.Build.0 = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Debug|x86.Build.0 = Debug|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|x64.ActiveCfg = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|x64.Build.0 = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEA93AD4-0A8F-41C7-8533-C552974FD442}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
