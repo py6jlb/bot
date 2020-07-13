@@ -1,15 +1,30 @@
 syntax = "proto3";
-
 option csharp_namespace = "Protos";
 
 service Writer {
-	rpc SaveSpendingData (WriteSpendingDataRequest) returns (WriteSpendingDataResponce);
+	rpc SaveMoneyTransaction (SaveMoneyTransactionRequest) returns (SaveMoneyTransactionResponse);
+	rpc SetCategory (SetCategoryRequest) returns (SetCategoryResponse);
 }
 
-message WriteSpendingDataRequest{
-
+message SaveMoneyTransactionRequest{
+	string Id = 1;
+	float Sum = 2;
+	string Sign = 3;
+	double RegisterDate = 4;
+	string FromUserName = 5;
 }
 
-message WriteSpendingDataResponce{
+message SaveMoneyTransactionResponse{
+	string Id = 1;
+}
 
+message SetCategoryRequest{
+	string Id = 1;
+	string CategoryName = 2;
+	string CategoryHumanName = 3;
+	string CategoryIcon = 4;
+}
+
+message SetCategoryResponse{
+	bool Success = 1;
 }

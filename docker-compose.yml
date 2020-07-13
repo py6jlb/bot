@@ -1,0 +1,34 @@
+version: '3.4'
+
+networks:
+  app:
+    driver: "bridge"
+
+services:
+  bot.datastore:
+    image: ${DOCKER_REGISTRY-}botdatastore
+    build:
+      context: .
+      dockerfile: Bot.DataStore/Dockerfile
+    volumes:
+      - ./db:/app/db
+    networks:
+      app:
+        aliases:
+          - "datastore"
+
+  bot.telegramworker:
+    image: ${DOCKER_REGISTRY-}bottelegramworker
+    build:
+      context: .
+      dockerfile: Bot.TelegramWorker/Dockerfile
+    environment:
+      - DOTNET_BOT_API_KEY=430705700:AAEttDAv7-q5qBrRJViI0t_Qb7zjzx9guwI
+      - DOTNET_ALLOWED_USERS=Py6jlb||ahfksdfsd||sdfjkhsdkfjh
+      - DOTNET_BOT_DATA_STORE_ENDPOINT=https://datastore123
+    networks:
+      app:
+        aliases:
+          - "bot_worker"
+    depends_on:
+      - "bot.datastore"

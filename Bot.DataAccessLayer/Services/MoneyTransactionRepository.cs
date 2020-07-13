@@ -30,14 +30,14 @@ namespace Bot.DataAccessLayer.Services
             return _collection.Find(x => x.Id == id).FirstOrDefault();
         }
 
-        public ObjectId Insert(MoneyTransaction forecast)
+        public ObjectId Insert(MoneyTransaction moneyTransaction)
         {
-            return _collection.Insert(forecast);
+            return _collection.Insert(moneyTransaction);
         }
 
-        public bool Update(MoneyTransaction forecast)
+        public bool Update(MoneyTransaction moneyTransaction)
         {
-            return _collection.Update(forecast);
+            return _collection.Update(moneyTransaction);
         }
     }
 }

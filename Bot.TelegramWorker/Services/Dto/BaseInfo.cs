@@ -10,6 +10,8 @@ namespace Bot.TelegramWorker.Services.Dto
         public string FromUserName { get; set; }
         public DateTime RegisterDate { get; set; }
 
+        public string Sign { get; set; }
+
         public override string ToString()
         {
             var str = JsonConvert.SerializeObject(this);

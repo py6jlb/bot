@@ -1,6 +1,7 @@
 ﻿using Bot.DataAccessLayer;
 using Bot.DataAccessLayer.Abstraction;
 using Bot.DataAccessLayer.Options;
+using Bot.DataAccessLayer.Services;
 using Bot.DataStore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +25,7 @@ namespace Bot.DataStore
         {
             services.Configure<LiteDbOptions>(Configuration.GetSection("LiteDbOptions"));
             services.AddSingleton<ILiteDbContext, LiteDbContext>();
+            services.AddTransient<IMoneyTransactionRepository, MoneyTransactionRepository>();
             services.AddGrpc();
         }
 

@@ -106,12 +106,13 @@ namespace Bot.TelegramWorker.Services
                 {
                     FromUserName = message.From.Username,
                     Number = num,
-                    RegisterDate = message.Date
+                    RegisterDate = message.Date,
+                    Sign = isIncome ? "+" : "-"
                 });
 
                 await _bot.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: $"{(isIncome ? "" : "-")}{message.Text} руб",
+                    text: $"{savedData.Sign}{num} руб",
                     replyMarkup: GetInlineKeyboard(isIncome, savedData.Id)
                 );
             }

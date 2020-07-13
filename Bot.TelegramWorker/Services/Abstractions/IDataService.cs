@@ -9,6 +9,6 @@ namespace Bot.TelegramWorker.Services.Abstractions
     public interface IDataService
     {
         Task<BaseInfo> SaveBaseData(BaseInfo data);
-        Task SetCategory(Guid id, BaseInfo data);
+        Task<bool> SetCategory(string id, CategoryInfo data);
     }
 }

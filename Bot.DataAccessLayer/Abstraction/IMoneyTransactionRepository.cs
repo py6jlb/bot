@@ -9,7 +9,7 @@ namespace Bot.DataAccessLayer.Abstraction
         int Delete(ObjectId id);
         IEnumerable<MoneyTransaction> FindAll();
         MoneyTransaction FindOne(ObjectId id);
-        ObjectId Insert(MoneyTransaction forecast);
-        bool Update(MoneyTransaction forecast);
+        ObjectId Insert(MoneyTransaction moneyTransaction);
+        bool Update(MoneyTransaction moneyTransaction);
     }
 }
