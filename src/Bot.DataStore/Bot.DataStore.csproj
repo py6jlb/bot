@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>..\..\deploy\docker-compose.dcproj</DockerComposeProjectPath>
     <UserSecretsId>a34d1236-ecc5-4535-a357-df5e0cf6c23b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-	  <Protobuf Include="..\protos\write.proto" GrpcServices="Server" />
-	  <Protobuf Include="..\protos\read.proto" GrpcServices="Server" />
+	  <Protobuf Include="..\..\protos\write.proto" GrpcServices="Server" />
+	  <Protobuf Include="..\..\protos\read.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
