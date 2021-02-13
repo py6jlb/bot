@@ -17,12 +17,18 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Client\Client.csproj" />
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="IdentityServer\Accounts\Models" />
       <Folder Include="IdentityServer\Accounts\ViewModels" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Error\Views\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Error\Views\_ViewStart.cshtml" />
     </ItemGroup>
 
 </Project>

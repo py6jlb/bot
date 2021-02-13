@@ -39,10 +39,7 @@ namespace Server.IdentityServer.Extensions
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
-            var builder = services.AddIdentityServer(options =>
-                {
-                    options.Discovery.CustomEntries.Add("additional_data", "~/AdditionalData");
-                })
+            var builder = services.AddIdentityServer()
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlite(
@@ -56,15 +53,15 @@ namespace Server.IdentityServer.Extensions
                 .AddProfileService<IdentityProfileService>();
                 
             builder.AddDeveloperSigningCredential();
-            services.AddLocalApiAuthentication();
+            //services.AddLocalApiAuthentication();
             return services;
         }
         
-        // public static IApplicationBuilder SeedDevelopUsersData(this IApplicationBuilder app)
-        // {
-        //     DataInitializer.EnsureSeedDevelopUsersData(app);
-        //     return app;
-        // }
+        public static IApplicationBuilder SeedDevelopUsersData(this IApplicationBuilder app)
+        {
+            DataInitializer.EnsureSeedDevelopUsersData(app);
+            return app;
+        }
         
         public static IApplicationBuilder InitializeIdentityServerDatabase(this IApplicationBuilder app)
         {

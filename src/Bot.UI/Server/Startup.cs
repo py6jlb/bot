@@ -23,6 +23,7 @@ namespace Server
         {
             services.AddIdentityDb(_config).AddAspNetIdentity().AddConfiguredIdentityServer(_config);
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,19 +33,27 @@ namespace Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.SeedDevelopUsersData();
             }
             else
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            
+            app.UseIdentityServer();
             app.UseHttpsRedirection();
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapFallbackToFile("index.html");
+            });
         }
     }
 }

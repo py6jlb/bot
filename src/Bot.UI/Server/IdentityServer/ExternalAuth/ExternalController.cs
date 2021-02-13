@@ -107,31 +107,25 @@ namespace Server.IdentityServer.ExternalAuth
             };
 
             await HttpContext.SignInAsync(isuser, localSignInProps);
-
             await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
             var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
-
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.Id, name, true,
                 context?.Client.ClientId));
 
-            if (context != null)
-            {
-                if (context.IsNativeClient())
-                {
-                    return this.LoadingPage("Redirect", returnUrl);
-                }
-            }
-
-            return Redirect(returnUrl);
+            if (context == null) return Redirect(returnUrl);
+            return context.IsNativeClient() ? 
+                this.LoadingPage("~/IdentityServer/Views/Share/Redirect", returnUrl) 
+                : Redirect(returnUrl);
         }
 
         private async Task<(ApplicationUser user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(AuthenticateResult result)
         {
             var externalUser = result.Principal;
             var userIdClaim = externalUser.FindFirst(JwtClaimTypes.Subject) ??
-                              externalUser.FindFirst(ClaimTypes.NameIdentifier) ?? throw new Exception("Unknown userid");
+                              externalUser.FindFirst(ClaimTypes.NameIdentifier) ?? 
+                              throw new Exception("Unknown userid");
             
             var claims = externalUser.Claims.ToList();
             claims.Remove(userIdClaim);

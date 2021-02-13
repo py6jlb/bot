@@ -34,7 +34,6 @@ namespace Server.IdentityServer.Accounts
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IWebHostEnvironment _env;
         
-        
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
