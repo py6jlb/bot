@@ -1,6 +1,7 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,6 +68,14 @@ namespace Server.IdentityServer.Extensions
         {
             DataInitializer.InitializeIdentityServerDatabase(app);
             return app;
+        }
+
+        public static IServiceCollection AddViewLocations(this IServiceCollection services)
+        {
+            services.Configure<RazorViewEngineOptions>(options => {
+                options.ViewLocationExpanders.Add(new ViewLocationExpander());
+            });
+            return services;
         }
     }
 }

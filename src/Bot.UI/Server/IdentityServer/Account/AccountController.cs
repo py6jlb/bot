@@ -13,16 +13,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Server.IdentityServer.Accounts.Models;
-using Server.IdentityServer.Accounts.ViewModels;
+using Server.IdentityServer.Account.Models;
+using Server.IdentityServer.Account.ViewModels;
 using Server.IdentityServer.Attributes;
 using Server.IdentityServer.DataAccess.Entities;
 using Server.IdentityServer.Extensions;
 
-namespace Server.IdentityServer.Accounts
+namespace Server.IdentityServer.Account
 {
-    [SecurityHeaders]
     [AllowAnonymous]
+    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -64,14 +64,13 @@ namespace Server.IdentityServer.Accounts
             if (vm.IsExternalLoginOnly)
                 return RedirectToAction("Challenge", "External", new { scheme = vm.ExternalLoginScheme, returnUrl });
             
-            return View("~/IdentityServer/Accounts/Views/Login.cshtml", vm);
+            return View(vm);
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
-            
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             if (button != "login")
             {
@@ -110,7 +109,7 @@ namespace Server.IdentityServer.Accounts
             }
             
             var vm = await BuildLoginViewModelAsync(model);
-            return View("~/IdentityServer/Accounts/Views/Login.cshtml", vm);
+            return View(vm);
         }
 
         [HttpGet]
@@ -123,7 +122,7 @@ namespace Server.IdentityServer.Accounts
                 return await Logout(vm);
             }
 
-            return View("~/IdentityServer/Accounts/Views/Logout.cshtml", vm);
+            return View(vm);
         }
         
         [HttpPost]
@@ -138,16 +137,15 @@ namespace Server.IdentityServer.Accounts
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
 
-            if (!vm.TriggerExternalSignout) return View("~/IdentityServer/Accounts/Views/LoggedOut.cshtml", vm);
+            if (!vm.TriggerExternalSignout) return View("LoggedOut", vm);
             var url = Url.Action("Logout", new { logoutId = vm.LogoutId });
             return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
-
         }
 
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            return View("~/IdentityServer/Accounts/Views/AccessDenied.cshtml");
+            return View();
         }
         
         //-----------------------------------------------------------------------

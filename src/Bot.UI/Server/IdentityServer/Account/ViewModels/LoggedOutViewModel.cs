@@ -1,4 +1,4 @@
-﻿namespace Server.IdentityServer.Accounts.ViewModels
+﻿namespace Server.IdentityServer.Account.ViewModels
 {
     public class LoggedOutViewModel
     {

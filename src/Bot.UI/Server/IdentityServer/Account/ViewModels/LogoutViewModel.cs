@@ -1,6 +1,6 @@
-﻿using Server.IdentityServer.Accounts.Models;
+﻿using Server.IdentityServer.Account.Models;
 
-namespace Server.IdentityServer.Accounts.ViewModels
+namespace Server.IdentityServer.Account.ViewModels
 {
     public class LogoutViewModel: LogoutInputModel
     {

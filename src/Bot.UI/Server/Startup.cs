@@ -22,6 +22,7 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityDb(_config).AddAspNetIdentity().AddConfiguredIdentityServer(_config);
+            services.AddViewLocations();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -50,8 +51,8 @@ namespace Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
                 endpoints.MapFallbackToFile("index.html");
             });
         }

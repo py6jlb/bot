@@ -19,7 +19,7 @@ using Server.IdentityServer.DataAccess.Entities;
 using Server.IdentityServer.Extensions;
 using Shared;
 
-namespace Server.IdentityServer.ExternalAuth
+namespace Server.IdentityServer.External
 {
     [SecurityHeaders]
     [AllowAnonymous]
@@ -116,7 +116,7 @@ namespace Server.IdentityServer.ExternalAuth
 
             if (context == null) return Redirect(returnUrl);
             return context.IsNativeClient() ? 
-                this.LoadingPage("~/IdentityServer/Views/Share/Redirect", returnUrl) 
+                this.LoadingPage("Redirect", returnUrl) 
                 : Redirect(returnUrl);
         }
 

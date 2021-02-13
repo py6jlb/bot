@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Server.IdentityServer.Accounts.Models
+namespace Server.IdentityServer.Account.Models
 {
     public class LoginInputModel
     {
