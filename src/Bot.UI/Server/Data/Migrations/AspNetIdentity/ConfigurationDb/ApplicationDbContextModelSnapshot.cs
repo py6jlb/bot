@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.IdentityServer.DataAccess.Contexts;
 
 namespace Server.Data.Migrations.AspNetIdentity.ConfigurationDb
