@@ -9,9 +9,19 @@ services:
       - "80"
       - "443"
     volumes:
+      - ./keys:/root/.aspnet/DataProtection-Keys
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   
-  bot.telegramworker:
+#  bot.telegramworker:
+#    environment:
+#      - DOTNET_ENVIRONMENT=Development
+#      - DOTNET_BOT_DATA_STORE_ENDPOINT=https://datastore
+
+  web:
     environment:
-      - DOTNET_ENVIRONMENT=Development
-      - DOTNET_BOT_DATA_STORE_ENDPOINT=https://datastore
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    ports:
+      - "5000"
+    volumes:
+      - ./keys:/root/.aspnet/DataProtection-Keys

@@ -6,10 +6,16 @@
     <ProjectGuid>eea93ad4-0a8f-41c7-8533-c552974fd442</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="deploy.md" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="nginx\conf.d\site.conf" />
+    <None Include="nginx\nginx.conf" />
+    <None Include="nginx\proxy.conf" />
+    <None Include="ssl\localhost.crt" />
+    <None Include="ssl\localhost.key" />
   </ItemGroup>
 </Project>
