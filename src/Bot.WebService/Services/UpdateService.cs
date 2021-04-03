@@ -39,15 +39,14 @@ namespace Bot.WebService.Services
             {
                 await _botService.Client.SendTextMessageAsync(
                     chatId: update.Message.Chat.Id,
-                    text: "Вы кто такие? Я вас не звал. Идите на х*й!"
-                );
+                    text: "Вы кто такие? Я вас не звал. Идите на х*й!", cancellationToken: cancellationToken);
                 return;
             }
 
             var handler = update.Type switch
             {
-                UpdateType.Message => _messageHandler.HandleMessage(update.Message),
-                UpdateType.EditedMessage => _messageHandler.HandleMessage(update.Message),
+                UpdateType.Message => _messageHandler.HandleMessageAsync(update.Message),
+                UpdateType.EditedMessage => _messageHandler.HandleMessageAsync(update.Message),
                 UpdateType.CallbackQuery => _callbackHandler.HandleCallbackQuery(update.CallbackQuery),
                 // UpdateType.InlineQuery => _inlineHandler.HandleInlineQuery(update.InlineQuery),
                 // UpdateType.ChosenInlineResult => _inlineHandler.HandleChosenInlineResult(update.ChosenInlineResult),
@@ -72,11 +71,11 @@ namespace Bot.WebService.Services
 
         private async Task UnknownUpdateHandlerAsync(Update update)
         {
-            Console.WriteLine($"Unknown update type: {update.Type}");
+            _logger.LogInformation($"Unknown update type: {update.Type}");
             await Task.CompletedTask;
         }
 
-        private static async Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
+        private async Task HandleErrorAsync(Exception exception, CancellationToken cancellationToken)
         {
             var errorMessage = exception switch
             {
@@ -84,7 +83,7 @@ namespace Bot.WebService.Services
                 _ => exception.Message
             };
 
-            Console.WriteLine(errorMessage);
+            _logger.LogError(errorMessage);
             await Task.CompletedTask;
         }
     }

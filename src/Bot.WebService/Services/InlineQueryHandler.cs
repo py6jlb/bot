@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Bot.WebService.Services.Base;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.InlineQueryResults;
 
@@ -8,16 +9,18 @@ namespace Bot.WebService.Services
 {
     public class InlineQueryHandler : IInlineQueryHandler
     {
+        private readonly ILogger<InlineQueryHandler> _logger;
         private readonly IBotService _botService;
 
-        public InlineQueryHandler(IBotService botService)
+        public InlineQueryHandler(IBotService botService, ILogger<InlineQueryHandler> logger)
         {
+            _logger = logger;
             _botService = botService;
         }
 
         public async Task HandleInlineQuery(InlineQuery inlineQuery)
         {
-            Console.WriteLine($"Received inline query from: {inlineQuery.From.Id}");
+            _logger.LogInformation($"Received inline query from: {inlineQuery.From.Id}");
 
             InlineQueryResultBase[] results = {
                 new InlineQueryResultArticle(
@@ -38,7 +41,8 @@ namespace Bot.WebService.Services
 
         public async Task HandleChosenInlineResult(ChosenInlineResult chosenInlineResult)
         {
-            Console.WriteLine($"Received inline result: {chosenInlineResult.ResultId}");
+            _logger.LogInformation($"Received inline result: {chosenInlineResult.ResultId}");
+            await Task.CompletedTask;
         }
     }
 }

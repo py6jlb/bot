@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bot.WebService.Options;
 using Bot.WebService.Services.Base;
 using Bot.WebService.Services.Dto;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Extensions;
 using Telegram.Bot.Types;
@@ -16,64 +17,64 @@ namespace Bot.WebService.Services
 {
     public class MessageHandler : IMessageHandler
     {
+        private readonly ILogger<MessageHandler> _logger;
         private readonly IBotService _botService;
         private readonly IOptions<Categories> _categories;
         private readonly IDataService _dataService;
 
-        public MessageHandler(IBotService botService, IOptions<Categories> categories, IDataService dataService)
+        public MessageHandler(IBotService botService, ILogger<MessageHandler> logger, 
+            IOptions<Categories> categories, IDataService dataService)
         {
+            _logger = logger;
             _botService = botService;
             _categories = categories;
             _dataService = dataService;
         }
 
-        public async Task HandleMessage(Message message)
+        public async Task HandleMessageAsync(Message message)
         {
-            Console.WriteLine($"Receive message type: {message.Type}");
+            _logger.LogInformation($"Receive message type: {message.Type}");
             if (message.Type != MessageType.Text)
                 return;
 
             var action = (message.Text.Split(' ').First()?.ToLower()) switch
             {
-                "/начать" => HandleStart(message),
-                "/start" => HandleStart(message),
-                "/cancel" => HandleCancel(message),
-                "/закрыть" => HandleCancel(message),
-                "/помощь" => Usage(message),
-                "/help" => Usage(message),
-                _ => HandleNonComandMessage(message)
+                "/начать" => HandleStartAsync(message),
+                "/start" => HandleStartAsync(message),
+                "/cancel" => HandleCancelAsync(message),
+                "/закрыть" => HandleCancelAsync(message),
+                "/помощь" => HandleHelpAsync(message),
+                "/help" => HandleHelpAsync(message),
+                _ => HandleNonCommandMessageAsync(message)
             };
             await action;
         }
 
-        private async Task HandleStart(Message message)
+        private async Task HandleStartAsync(Message message)
         {
             await _botService.Client.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-            await SendBaseKeyboard(message);
-            await Usage(message);
+            await SendBaseKeyboardAsync(message);
+            await HandleHelpAsync(message);
         }
 
-        private async Task HandleCancel(Message message)
+        private async Task HandleCancelAsync(Message message)
         {
-            await DeleteBaseKeyboard(message);
+            await DeleteBaseKeyboardAsync(message);
         }
 
-        private async Task Usage(Message message)
+        private async Task HandleHelpAsync(Message message)
         {
             const string usage = "Что я умею:\n" +
                                     "Мне нужно отправлять суммы расходов в рублях, а затем выбирать к какой категории расходов они относятся. " +
                                     "Если надо сохранить приход, то перед суммой должен ыть занк \"+\"";
-            await _botService.Client.SendTextMessageAsync(
-                chatId: message.Chat.Id,
-                text: usage
-            );
+            await _botService.Client.SendTextMessageAsync(chatId: message.Chat.Id, text: usage);
         }
 
-        private async Task SendBaseKeyboard(Message message)
+        private async Task SendBaseKeyboardAsync(Message message)
         {
             var replyKeyboardMarkup = new ReplyKeyboardMarkup(
-                new KeyboardButton[] { new KeyboardButton("/Помощь") },
-                resizeKeyboard: true
+                new[] { new KeyboardButton("/Помощь") },
+                true
             ); ;
 
             await _botService.Client.SendTextMessageAsync(
@@ -83,7 +84,7 @@ namespace Bot.WebService.Services
             );
         }
 
-        private async Task DeleteBaseKeyboard(Message message)
+        private async Task DeleteBaseKeyboardAsync(Message message)
         {
             await _botService.Client.SendTextMessageAsync(
                 chatId: message.Chat.Id,
@@ -92,7 +93,7 @@ namespace Bot.WebService.Services
             );
         }
 
-        private async Task HandleNonComandMessage(Message message)
+        private async Task HandleNonCommandMessageAsync(Message message)
         {
             var isIncome = message.Text.StartsWith("+");
             var msgText = isIncome ? message.Text.Substring(1) : message.Text;

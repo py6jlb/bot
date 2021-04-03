@@ -5,6 +5,6 @@ namespace Bot.WebService.Services.Base
 {
     public interface IMessageHandler
     {
-        Task HandleMessage(Message message);
+        Task HandleMessageAsync(Message message);
     }
 }
