@@ -2,6 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <DockerComposeProjectPath>..\..\..\deploy\docker-compose.dcproj</DockerComposeProjectPath>
+        <UserSecretsId>1011a574-75b4-495d-b809-ac8d80e939b5</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..\..</DockerfileContext>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +19,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
         <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.2" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     </ItemGroup>
 
     <ItemGroup>

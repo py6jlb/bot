@@ -6,7 +6,7 @@ using Telegram.Bot.Types;
 
 namespace Bot.WebService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UpdateController : Controller
     {
         private readonly IUpdateService _updateService;
@@ -17,7 +17,7 @@ namespace Bot.WebService.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get(CancellationToken token)
         {
             return Ok("szdgsdfgsdfgsdfgsdfgsdfgsdfgsdfg");
         }

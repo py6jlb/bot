@@ -4,6 +4,9 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>eea93ad4-0a8f-41c7-8533-c552974fd442</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <DockerServiceName>server</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="deploy.md" />
@@ -17,5 +20,6 @@
     <None Include="nginx\proxy.conf" />
     <None Include="ssl\localhost.crt" />
     <None Include="ssl\localhost.key" />
+    <None Include="ssl\localhost.pfx" />
   </ItemGroup>
 </Project>
