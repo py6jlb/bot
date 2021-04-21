@@ -15,6 +15,13 @@ namespace Bot.WebService.Controllers
             _updateService = updateService;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok("szdgsdfgsdfgsdfgsdfgsdfgsdfgsdfg");
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Update update, CancellationToken token)
         {

@@ -5,23 +5,19 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - "80"
-      - "443"
     volumes:
       - ./keys:/root/.aspnet/DataProtection-Keys
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-  
-#  bot.telegramworker:
-#    environment:
-#      - DOTNET_ENVIRONMENT=Development
-#      - DOTNET_BOT_DATA_STORE_ENDPOINT=https://datastore
 
-  web:
+  bot.webservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_URLS=https://+:5001;http://+:5000
+      - ASPNETCORE_BOT_DATA_STORE_ENDPOINT=https://datastore
     ports:
-      - "5000"
+      - "5000:5000"
+      - "5001:5001"
     volumes:
       - ./keys:/root/.aspnet/DataProtection-Keys
+      - ./ssl:/root/.aspnet/certs:ro
+

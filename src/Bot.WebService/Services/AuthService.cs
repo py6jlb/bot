@@ -19,7 +19,7 @@ namespace Bot.WebService.Services
 
         public async Task<bool> IsAllowedUser(Update update)
         {
-            var userString = _config["DOTNET_ALLOWED_USERS"] ?? "";
+            var userString = _config["ASPNETCORE_ALLOWED_USERS"] ?? "";
             var usernames = userString.Split("||");
             var result = update.Type switch
             {

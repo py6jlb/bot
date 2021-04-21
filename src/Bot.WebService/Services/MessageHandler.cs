@@ -118,7 +118,7 @@ namespace Bot.WebService.Services
             {
                 await _botService.Client.SendTextMessageAsync(
                     chatId: message.Chat.Id,
-                    text: "Я не понимаю что вы от меня хотите."
+                    text: "Я не понимаю, что вы от меня хотите."
                 );
             }
         }

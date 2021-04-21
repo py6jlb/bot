@@ -13,7 +13,6 @@ namespace Bot.WebService.Services
         public BotService(IOptions<BotConfiguration> config)
         {
             _config = config.Value;
-            // use proxy if configured in appsettings.*.json
             Client = string.IsNullOrEmpty(_config.Socks5Host)
                 ? new TelegramBotClient(_config.BotToken)
                 : new TelegramBotClient(
