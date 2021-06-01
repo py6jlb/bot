@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Bot.WebService.Options;
 using Bot.WebService.Services;
 using Bot.WebService.Services.Base;
@@ -33,12 +30,12 @@ namespace Bot.WebService
             services.Configure<BotConfiguration>(configuration =>
             {
                 var botApiKey = _config["BOT_API_KEY"] ?? throw new ArgumentNullException("botApiKey",
-                    "�������� �� ����� ���� null, ��������� ��������� ���������.");
+                    "Параметр не может быть null, проверьте перменные окружения.");
                 var socks5Host = _config["BOT_SOCKS_HOST"];
                 var socks5PortParseResult = int.TryParse(_config["BOT_SOCKS_PORT"], out var socks5Port);
 
                 if (!string.IsNullOrWhiteSpace(socks5Host) && !socks5PortParseResult)
-                    throw new ArgumentNullException("socks5Port", "�������� �� ����� ���� null, ��������� ��������� ���������.");
+                    throw new ArgumentNullException("socks5Port", "Параметр не может быть null, проверьте перменные окружения.");
 
                 configuration.BotToken = botApiKey;
                 configuration.Socks5Host = socks5Host;

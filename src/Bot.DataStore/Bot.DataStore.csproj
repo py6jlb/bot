@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Bot.DataAccessLayer\Bot.DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="db\" />
+  </ItemGroup>
+
 </Project>
