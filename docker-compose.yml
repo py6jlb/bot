@@ -1,0 +1,72 @@
+version: '3.4'
+
+networks:
+  app:
+    driver: "bridge"
+
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    hostname: "nginx"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/proxy.conf:/etc/nginx/proxy.conf:ro
+      - ./ssl/localhost.crt:/etc/ssl/certs/localhost.crt:ro
+      - ./ssl/localhost.key:/etc/ssl/certs/localhost.key:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      app:
+    depends_on:
+      - server
+      - bot.webservice
+
+  bot.datastore:
+    container_name: datastore
+    image: ${DOCKER_REGISTRY-}botdatastore
+    hostname: "datastore"
+    build:
+      context: .
+      dockerfile: src/Bot.DataStore/Dockerfile
+    volumes:
+      - ./src/Bot.DataStore/db:/app/db
+    networks:
+      app:   
+
+  bot.webservice:
+    container_name: bot
+    image: ${DOCKER_REGISTRY-}botwebservice
+    hostname: "bot"
+    build:
+      context: .
+      dockerfile: src/Bot.WebService/Dockerfile
+    volumes:
+      - ./src/Bot.UI/Server/db:/app/db
+    environment:
+      - ASPNETCORE_USE_REVERSE_PROXY=true
+      - ASPNETCORE_BOT_API_KEY=330040075:AAHF7mtl1CEQ39fPXKteifC0yKyADvhMh3A
+      - ASPNETCORE_ALLOWED_USERS=Py6jlb||ahfksdfsd||sdfjkhsdkfjh
+      - ASPNETCORE_BOT_DATA_STORE_ENDPOINT=https://datastore123
+      - ASPNETCORE_SUBDIR=/bot
+      - ASPNETCORE_ISSUER_URI=https://localhost/web
+    networks:
+      app:
+    depends_on:
+      - bot.datastore
+
+  server:
+    container_name: wasm
+    image: ${DOCKER_REGISTRY-}server
+    build:
+      context: .
+      dockerfile: src/Bot.UI/Server/Dockerfile
+    volumes:
+      - ./src/Bot.UI/db:/app/db
+    hostname: "wasm_server"
+    networks:
+      app:
+    depends_on:
+      - bot.datastore

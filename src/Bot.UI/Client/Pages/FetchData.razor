@@ -1,5 +1,7 @@
 ﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
+@attribute [Authorize]
 
 <h1>Weather forecast</h1>
 
@@ -39,10 +41,10 @@ else
 @code {
     private WeatherForecast[] forecasts;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
 
     public class WeatherForecast
     {
