@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,8 +25,9 @@ namespace Server
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>(); //o=>o.IssuerUri = "wasm_server"
             services.AddAuthentication().AddIdentityServerJwt();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -34,11 +36,17 @@ namespace Server
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.InitializeIdentityServerDatabase();
-            
+
+            var forwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            forwardedHeaderOptions.KnownNetworks.Clear();
+            forwardedHeaderOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardedHeaderOptions);
+
             if (env.IsDevelopment())
             {
-                //app.SeedDevelopUsersData();
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
                 app.UseWebAssemblyDebugging();
@@ -50,11 +58,11 @@ namespace Server
             }
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
-            
+
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseIdentityServer();
@@ -65,6 +73,7 @@ namespace Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                // endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToFile("index.html");
             });
         }

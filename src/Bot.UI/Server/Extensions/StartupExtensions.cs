@@ -32,17 +32,5 @@ namespace Server.Extensions
                 .AddDefaultTokenProviders();
             return services;
         }
-        
-        public static IApplicationBuilder SeedDevelopUsersData(this IApplicationBuilder app)
-        {
-            DataInitializer.EnsureSeedDevelopUsersData(app);
-            return app;
-        }
-        
-        public static IApplicationBuilder InitializeIdentityServerDatabase(this IApplicationBuilder app)
-        {
-            DataInitializer.InitializeIdentityServerDatabase(app);
-            return app;
-        }
     }
 }
