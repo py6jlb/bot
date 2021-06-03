@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Bot.Shared.Extensions;
 using Bot.WebService.Options;
 using Bot.WebService.Services.Base;
 using Bot.WebService.Services.Dto;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Shared.Extensions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;

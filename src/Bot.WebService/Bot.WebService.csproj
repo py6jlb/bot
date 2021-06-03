@@ -25,8 +25,8 @@
     <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
   </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Bot.UI\Shared\Shared.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BotShared\Bot.Shared.csproj" />
+  </ItemGroup>
 
 </Project>
