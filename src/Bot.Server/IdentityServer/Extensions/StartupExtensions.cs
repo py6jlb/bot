@@ -42,7 +42,7 @@ namespace Bot.Server.IdentityServer.Extensions
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(o=>o.IssuerUri = "wasm_server")
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlite(

@@ -51,10 +51,12 @@ namespace Bot.Server
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            
-            app.UseIdentityServer();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
+            app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
