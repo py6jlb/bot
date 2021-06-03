@@ -25,7 +25,7 @@ namespace Server
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>(); //o=>o.IssuerUri = "wasm_server"
+            services.AddIdentityServer().AddApiAuthorization<ApplicationUser, ApplicationDbContext>(); //o => o.IssuerUri = "wasm_server"
             services.AddAuthentication().AddIdentityServerJwt();
 
             services.AddControllersWithViews();
