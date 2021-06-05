@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=123456
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/certs/localhost.pfx
     volumes:
-      - ./keys:/root/.aspnet/DataProtection-Keys
+      - ./keys/datastore:/root/.aspnet/DataProtection-Keys
       - ./ssl:/root/.aspnet/certs:ro
 
   bot.webservice:
@@ -22,12 +22,10 @@ services:
       - ASPNETCORE_BOT_DATA_STORE_ENDPOINT=https://datastore
       - ASPNETCORE_BOT_API_KEY=330040075:AAHF7mtl1CEQ39fPXKteifC0yKyADvhMh3A
       - ASPNETCORE_ALLOWED_USERS=Py6jlb||ahfksdfsd||sdfjkhsdkfjh
-    volumes:
-      - ./keys:/root/.aspnet/DataProtection-Keys
 
   server:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     volumes:
-      - ./keys:/root/.aspnet/DataProtection-Keys
+      - ./keys/wasm_server:/root/.aspnet/DataProtection-Keys

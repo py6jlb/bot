@@ -41,7 +41,6 @@ namespace Bot.Server.IdentityServer.Extensions
             IConfiguration config)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
             var builder = services.AddIdentityServer(o=>o.IssuerUri = "wasm_server")
                 .AddConfigurationStore(options =>
                 {
@@ -53,10 +52,8 @@ namespace Bot.Server.IdentityServer.Extensions
                         config.GetConnectionString("DefaultConnection"), sqliteOptions => sqliteOptions.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddAspNetIdentity<ApplicationUser>()
-                .AddProfileService<IdentityProfileService>();
-                
-            builder.AddDeveloperSigningCredential();
-            //services.AddLocalApiAuthentication();
+                .AddProfileService<IdentityProfileService>()
+                .AddDeveloperSigningCredential();
             return services;
         }
         

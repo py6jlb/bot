@@ -2,23 +2,26 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-        <DockerComposeProjectPath>..\..\..\deploy\docker-compose.dcproj</DockerComposeProjectPath>
+        <DockerComposeProjectPath>..\..\deploy\docker-compose.dcproj</DockerComposeProjectPath>
         <UserSecretsId>1011a574-75b4-495d-b809-ac8d80e939b5</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..\..</DockerfileContext>
+        <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.6" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
 	</ItemGroup>
 
@@ -35,7 +38,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bot.Client\Bot.Client.csproj" />
-      <ProjectReference Include="..\BotShared\Bot.Shared.csproj" />
+      <ProjectReference Include="..\Bot.Shared\Bot.Shared.csproj" />
     </ItemGroup>
 
 </Project>

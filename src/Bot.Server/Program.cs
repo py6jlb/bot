@@ -14,20 +14,21 @@ namespace Bot.Server
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults( webBuilder =>
-            {
-                webBuilder.ConfigureAppConfiguration((context, builder) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
-                    var env = context.HostingEnvironment;
-                    builder.SetBasePath(Directory.GetCurrentDirectory());
-                    Console.Write(Directory.GetCurrentDirectory());
-
-                    builder.AddJsonFile(Path.Combine("Configurations", "appsettings.json"), optional: true, reloadOnChange: true)
-                        .AddJsonFile(Path.Combine("Configurations",$"appsettings.{env.EnvironmentName}.json"), optional: true, reloadOnChange: true);
-                    builder.AddEnvironmentVariables();
-                    builder.AddCommandLine(args);
-                    
-                }).UseStartup<Startup>();
-            });
+                    var env = hostContext.HostingEnvironment;
+                    configApp.SetBasePath(Directory.GetCurrentDirectory());
+                    configApp.AddEnvironmentVariables();
+                    configApp.AddCommandLine(args);
+                })
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(opt => opt.Limits.MaxRequestLineSize = 20480);
+                }).ConfigureLogging((hostContext, configLogging) =>
+                {
+                    //configLogging.AddConsole();
+                });
     }
 }

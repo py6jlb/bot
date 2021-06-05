@@ -58,6 +58,8 @@ services:
   server:
     container_name: wasm_server
     image: ${DOCKER_REGISTRY-}server
+    environment:
+      - ASPNETCORE_USE_REVERSE_PROXY=true
     build:
       context: .
       dockerfile: src/Bot.Server/Dockerfile
@@ -66,5 +68,3 @@ services:
     hostname: "wasm_server"
     networks:
       app:
-    depends_on:
-      - bot.datastore

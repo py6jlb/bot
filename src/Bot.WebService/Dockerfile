@@ -3,11 +3,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["src/Bot.WebService/Bot.WebService.csproj", "src/Bot.WebService/"]
-COPY ["src/Bot.UI/Shared/Shared.csproj", "src/Bot.UI/Shared/"]
+COPY ["src/Bot.Shared/Bot.Shared.csproj", "src/Bot.Shared/"]
 RUN dotnet restore "src/Bot.WebService/Bot.WebService.csproj"
 COPY . .
 WORKDIR "/src/src/Bot.WebService"
