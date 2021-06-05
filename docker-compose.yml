@@ -44,7 +44,7 @@ services:
       context: .
       dockerfile: src/Bot.WebService/Dockerfile
     volumes:
-      - ./src/Bot.UI/Server/db:/app/db
+      - ./src/Bot.WebService/db:/app/db
     environment:
       - ASPNETCORE_USE_REVERSE_PROXY=true
       - ASPNETCORE_BOT_API_KEY=330040075:AAHF7mtl1CEQ39fPXKteifC0yKyADvhMh3A
@@ -58,15 +58,15 @@ services:
       - bot.datastore
 
   server:
-    container_name: wasm
+    container_name: wasm_server
     image: ${DOCKER_REGISTRY-}server
+    environment:
+      - ASPNETCORE_USE_REVERSE_PROXY=true
     build:
       context: .
-      dockerfile: src/Bot.UI/Server/Dockerfile
+      dockerfile: src/Bot/Server/Dockerfile
     volumes:
-      - ./src/Bot.UI/db:/app/db
+      - ./src/Bot/Server/db:/app/db
     hostname: "wasm_server"
     networks:
       app:
-    depends_on:
-      - bot.datastore

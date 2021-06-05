@@ -9,7 +9,6 @@
     <DockerServiceName>server</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="deploy.md" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
