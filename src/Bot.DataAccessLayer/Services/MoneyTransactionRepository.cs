@@ -8,7 +8,7 @@ namespace Bot.DataAccessLayer.Services
 {
     public class MoneyTransactionRepository : IMoneyTransactionRepository
     {
-        private ILiteCollection<MoneyTransaction> _collection;
+        private readonly ILiteCollection<MoneyTransaction> _collection;
         public MoneyTransactionRepository(ILiteDbContext liteDbContext)
         {
             _collection = liteDbContext.MoneyTransactions;

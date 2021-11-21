@@ -3,13 +3,18 @@
 option csharp_namespace = "Protos";
 
 service Reader {
-	rpc ReadSpendingData (ReadSpendingDataRequest) returns (ReadSpendingDataResponce);
+	rpc ReadSpendingData (ReadSpendingDataRequest) returns (stream ReadSpendingDataResponse);
 }
 
 message ReadSpendingDataRequest{
 
 }
 
-message ReadSpendingDataResponce{
-
+message ReadSpendingDataResponse{
+	string Id = 1;
+	float Sum = 2;
+	string Sign = 3;
+	double RegisterDate = 4;
+	string FromUserName = 5;
 }
+

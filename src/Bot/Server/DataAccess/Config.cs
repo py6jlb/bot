@@ -23,16 +23,16 @@ namespace Bot.Server.DataAccess
         public static IEnumerable<IdentityServer4.Models.Client> Clients =>
             new List<IdentityServer4.Models.Client>
             {
-                // machine to machine client
-                new IdentityServer4.Models.Client
-                {
-                    ClientId = "client",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                //// machine to machine client
+                //new IdentityServer4.Models.Client
+                //{
+                //    ClientId = "client",
+                //    ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    // scopes that client has access to
-                    AllowedScopes = { "api1" }
-                },
+                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                //    // scopes that client has access to
+                //    AllowedScopes = { "api1" }
+                //},
                 
                 new IdentityServer4.Models.Client
                 {
